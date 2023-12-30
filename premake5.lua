@@ -15,6 +15,7 @@ vpaths {
 
 IncludeDirs = {}
 IncludeDirs["glfw"] = "Vendor/glfw/include"
+IncludeDirs["glad"] = "Vendor/glad/include"
 
 filter "configurations:Debug"
     optimize "off"
@@ -34,6 +35,7 @@ configurations {
 startproject "Sandbox"
 
 include "Vendor/glfw"
+include "Vendor/glad"
 
 project "CrosslyGL"
     location "CrosslyGL"
@@ -47,10 +49,12 @@ project "CrosslyGL"
     }
     includedirs {
         "%{prj.location}/include",
-        "%{IncludeDirs.glfw}"
+        "%{IncludeDirs.glfw}",
+        "%{IncludeDirs.glad}"
     }
     links {
-        "glfw"
+        "glfw",
+        "glad"
     }
 
 project "Sandbox"
@@ -64,6 +68,7 @@ project "Sandbox"
     }
     includedirs {
         "CrosslyGL/include",
-        "%{IncludeDirs.glfw}"
+        "%{IncludeDirs.glfw}",
+        "%{IncludeDirs.glad}"
     }
     links "CrosslyGL"

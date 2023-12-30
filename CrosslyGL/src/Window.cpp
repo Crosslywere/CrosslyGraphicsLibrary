@@ -1,5 +1,6 @@
 #include <CrosslyGL/Window.hpp>
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include <iostream>
@@ -21,13 +22,25 @@ namespace Crossly
 		}
 		glfwMakeContextCurrent(window);
 
+		if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == 0)
+		{
+			glfwDestroyWindow(window);
+			glfwTerminate();
+			throw std::runtime_error("gladLoadGLLoader failed!");
+		}
+
 		std::cout << "Running Application!...\n";
 		glfwSwapInterval(1);
+
 		while (!glfwWindowShouldClose(window))
 		{
+			glClear(GL_COLOR_BUFFER_BIT);
+
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}
+		
+		glfwDestroyWindow(window);
 		glfwTerminate();
 	}
 
