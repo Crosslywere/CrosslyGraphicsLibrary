@@ -13,6 +13,9 @@ vpaths {
     }
 }
 
+IncludeDirs = {}
+IncludeDirs["glfw"] = "Vendor/glfw/include"
+
 filter "configurations:Debug"
     optimize "off"
     symbols "on"
@@ -30,6 +33,8 @@ configurations {
 }
 startproject "Sandbox"
 
+include "Vendor/glfw"
+
 project "CrosslyGL"
     location "CrosslyGL"
     kind "StaticLib"
@@ -41,7 +46,11 @@ project "CrosslyGL"
         "%{prj.location}/src/**.cpp"
     }
     includedirs {
-        "%{prj.location}/include"
+        "%{prj.location}/include",
+        "%{IncludeDirs.glfw}"
+    }
+    links {
+        "glfw"
     }
 
 project "Sandbox"
@@ -54,6 +63,7 @@ project "Sandbox"
         "%{prj.location}/src/**.cpp"
     }
     includedirs {
-        "CrosslyGL/include"
+        "CrosslyGL/include",
+        "%{IncludeDirs.glfw}"
     }
     links "CrosslyGL"
