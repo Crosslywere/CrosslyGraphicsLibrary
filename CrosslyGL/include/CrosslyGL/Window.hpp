@@ -6,7 +6,7 @@ namespace Crossly
     class Window
     {
     public:
-        static void Run();
+        static void Run(int width, int height, const char* title);
     };
 
 }
