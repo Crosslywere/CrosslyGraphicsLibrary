@@ -8,6 +8,6 @@ Makefile
 # Folders
 .vscode/
 .vs/
-Bin/
+[Bb]in/
 Lib/
 obj/
