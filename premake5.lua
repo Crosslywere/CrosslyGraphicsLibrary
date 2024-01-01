@@ -10,6 +10,10 @@ vpaths {
     ["Header Files"] = {
         "**.h",
         "**.hpp"
+    },
+    ["Resource Files"] = {
+        "**.vert",
+        "**.frag"
     }
 }
 
@@ -64,7 +68,9 @@ project "Sandbox"
     targetdir "Bin/%{cfg.buildcfg}"
     files {
         "%{prj.location}/src/**.hpp",
-        "%{prj.location}/src/**.cpp"
+        "%{prj.location}/src/**.cpp",
+        "%{prj.location}/res/**.vert",
+        "%{prj.location}/res/**.frag"
     }
     includedirs {
         "CrosslyGL/include",
@@ -72,3 +78,4 @@ project "Sandbox"
         "%{IncludeDirs.glad}"
     }
     links "CrosslyGL"
+    postbuildcommands { "{COPYDIR} res %{cfg.buildtarget.directory}/res" }

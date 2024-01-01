@@ -33,27 +33,8 @@ public:
 		glEnableVertexAttribArray(0);
 		glBindVertexArray(0);
 
-		const char* vertShader = 
-R"(#version 410 core
-layout (location = 0) in vec3 aPos;
-void main()
-{
-	gl_Position = vec4(aPos, 1.0);
-})";
-		GLuint vs = Crossly::Shader::CompileShaderSource(vertShader, GL_VERTEX_SHADER);
-		Crossly::Shader::ValidateShaderCompileStatus(vs);
-		const char* fragShader =
-R"(#version 410 core
-layout (location = 0) out vec4 oColor;
-uniform float t;
-void main()
-{
-	float a = cos(t) / 2.0;
-	a += 0.5;
-	oColor = vec4(0.5, 0.8, a, 1.0);
-})";
-		GLuint fs = Crossly::Shader::CompileShaderSource(fragShader, GL_FRAGMENT_SHADER);
-		Crossly::Shader::ValidateShaderCompileStatus(fs);
+		GLuint vs = Crossly::Shader::CompileShaderFile("res/shader.vert", GL_VERTEX_SHADER);
+		GLuint fs = Crossly::Shader::CompileShaderFile("res/shader.frag", GL_FRAGMENT_SHADER);
 		Shader.reset(new Crossly::Shader({ vs, fs }));
 		Crossly::Shader::DeleteShader(vs);
 		Crossly::Shader::DeleteShader(fs);
@@ -66,7 +47,7 @@ void main()
 	virtual void OnRender() override
 	{
 		Shader->Use();
-		Shader->SetFloat("t", glfwGetTime());
+		Shader->SetFloat("t", static_cast<float>(glfwGetTime()));
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}

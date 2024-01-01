@@ -11,6 +11,7 @@ namespace Crossly
 	{
 	public:
 		static unsigned int CompileShaderSource(const char* const source, unsigned int type);
+		static unsigned int CompileShaderFile(const char* url, unsigned int type);
 		static void DeleteShader(unsigned int shader);
 		static bool ValidateShader(unsigned int shader, unsigned int pname);
 		static bool ValidateShaderCompileStatus(unsigned int shader);
