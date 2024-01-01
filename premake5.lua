@@ -22,11 +22,13 @@ IncludeDirs["glfw"] = "Vendor/glfw/include"
 IncludeDirs["glad"] = "Vendor/glad/include"
 
 filter "configurations:Debug"
+    defines "_DEBUG"
     optimize "off"
     symbols "on"
     runtime "Debug"
 
 filter "configurations:Release"
+    defines "NDEBUG"    
     optimize "on"
     runtime "Release"
 
