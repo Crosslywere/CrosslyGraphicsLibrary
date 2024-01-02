@@ -1,11 +1,17 @@
 #pragma once
 
-#include <vector>
+#include <initializer_list>
 #include <string>
 #include <unordered_map>
 
 namespace Crossly
 {
+
+	struct ShaderFile
+	{
+		const char* URL;
+		unsigned int Type;
+	};
 
 	class Shader
 	{
@@ -18,7 +24,8 @@ namespace Crossly
 		static bool ValidateProgram(unsigned int program, unsigned int pname);
 		static bool ValidateProgramLinkStatus(unsigned int program_id);
 	public:
-		Shader(const std::vector<unsigned int>& shader_ids);
+		Shader(const std::initializer_list<unsigned int>& shader_ids);
+		Shader(const std::initializer_list<ShaderFile>& files);
 		~Shader();
 		void Use() const;
 		void SetFloat(const std::string& name, float v0);

@@ -78,12 +78,25 @@ namespace Crossly
 		return ValidateProgram(program, GL_LINK_STATUS);
 	}
 
-	Shader::Shader(const std::vector<unsigned int>& shader_ids)
+	Shader::Shader(const std::initializer_list<unsigned int>& shader_ids)
 	{
 		m_ProgramID = glCreateProgram();
 		for (unsigned int shader_id : shader_ids)
 		{
 			glAttachShader(m_ProgramID, shader_id);
+		}
+		glLinkProgram(m_ProgramID);
+		ValidateProgramLinkStatus(m_ProgramID);
+	}
+
+	Shader::Shader(const std::initializer_list<ShaderFile>& files)
+	{
+		m_ProgramID = glCreateProgram();
+		for (const auto& file : files)
+		{
+			auto shader = CompileShaderFile(file.URL, file.Type);
+			glAttachShader(m_ProgramID, shader);
+			DeleteShader(shader);
 		}
 		glLinkProgram(m_ProgramID);
 		ValidateProgramLinkStatus(m_ProgramID);

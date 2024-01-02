@@ -1,5 +1,7 @@
 #include <CrosslyGL/Window.hpp>
 #include <CrosslyGL/Shader.hpp>
+#include <CrosslyGL/ResourceManager.hpp>
+// TODO: Remove need for glad.h and glfw3.h
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -33,11 +35,10 @@ public:
 		glEnableVertexAttribArray(0);
 		glBindVertexArray(0);
 
-		GLuint vs = Crossly::Shader::CompileShaderFile("res/shader.vert", GL_VERTEX_SHADER);
-		GLuint fs = Crossly::Shader::CompileShaderFile("res/shader.frag", GL_FRAGMENT_SHADER);
-		Shader.reset(new Crossly::Shader({ vs, fs }));
-		Crossly::Shader::DeleteShader(vs);
-		Crossly::Shader::DeleteShader(fs);
+		Shader.reset(new Crossly::Shader({
+			{"res/shader.vert", GL_VERTEX_SHADER},
+			{"res/shader.frag", GL_FRAGMENT_SHADER}
+		}));
 	}
 
 	virtual void OnUpdate(float dt) override
