@@ -1,5 +1,4 @@
 #include <CrosslyGL/Window.hpp>
-#include <CrosslyGL/Shader.hpp>
 #include <CrosslyGL/ResourceManager.hpp>
 // TODO: Remove need for glad.h and glfw3.h
 #include <glad/glad.h>
@@ -7,11 +6,14 @@
 #include <iostream>
 #include <memory>
 
+Crossly::ResourceManager& ResMan = Crossly::ResourceManager::GetInstance();
+
+
 class SandboxApp : public Crossly::Application
 {
 public:
 	SandboxApp()
-		: Crossly::Application(800, 600, "SandboxApp"), VAO(0), VBO(0), Shader(nullptr)
+		: Crossly::Application(800, 600, "SandboxApp"), VAO(0), VBO(0)
 	{
 	}
 
@@ -35,10 +37,7 @@ public:
 		glEnableVertexAttribArray(0);
 		glBindVertexArray(0);
 
-		Shader.reset(new Crossly::Shader({
-			{"res/shader.vert", GL_VERTEX_SHADER},
-			{"res/shader.frag", GL_FRAGMENT_SHADER}
-		}));
+		ResMan.CreateShader("shader", { { "res/shader.vert", GL_VERTEX_SHADER }, { "res/shader.frag", GL_FRAGMENT_SHADER } });
 	}
 
 	virtual void OnUpdate(float dt) override
@@ -47,21 +46,21 @@ public:
 
 	virtual void OnRender() override
 	{
-		Shader->Use();
-		Shader->SetFloat("t", static_cast<float>(glfwGetTime()));
+		auto& shader = ResMan.GetShader("shader");
+		shader.Use();
+		shader.SetFloat("t", static_cast<float>(glfwGetTime()));
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
 
 	virtual void OnDestroy() override
 	{
-		Shader.reset();
+		ResMan.DestroyShader("shader");
 		glDeleteBuffers(1, &VBO);
 		glDeleteVertexArrays(1, &VAO);
 	}
 private:
 	GLuint VAO, VBO;
-	std::unique_ptr<Crossly::Shader> Shader;
 };
 
 int main(int argc, char** argv)
