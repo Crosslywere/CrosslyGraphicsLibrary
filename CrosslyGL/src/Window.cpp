@@ -33,10 +33,13 @@ namespace Crossly
 		}
 		std::cout << "Running '" << app->GetTitle() << "'\n";
 		app->OnCreate();
+		float past = 0.0f;
 		while (!glfwWindowShouldClose(window))
 		{
-			glClear(GL_COLOR_BUFFER_BIT);
-			app->OnUpdate(0.0f);
+			float now = glfwGetTime();
+			float delta = now - past;
+			past = now;
+			app->OnUpdate(delta);
 			app->OnRender();
 			glfwSwapBuffers(window);
 			glfwPollEvents();
