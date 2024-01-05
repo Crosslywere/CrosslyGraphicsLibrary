@@ -1,6 +1,8 @@
 #include <CrosslyGL/Window.hpp>
 #include <CrosslyGL/ResourceManager.hpp>
 #include <CrosslyGL/VertexArray.hpp>
+#include <CrosslyGL/VertexBuffer.hpp>
+#include <CrosslyGL/VertexBufferLayout.hpp>
 // TODO: Remove need for glfw3.h
 #include <glad/glad.h>
 #include <iostream>
@@ -12,15 +14,13 @@ class SandboxApp : public Crossly::Application
 {
 public:
 	SandboxApp()
-		: Crossly::Application(800, 600, "SandboxApp"), f_TotalTime(0.0f), VBO(0), p_VertexArray(nullptr)
+		: Crossly::Application(800, 600, "SandboxApp"), f_TotalTime(0.0f), p_VertexArray(nullptr), p_VertexBuffer(nullptr)
 	{
 	}
 
 	virtual void OnCreate() override
 	{
 		p_VertexArray.reset(new Crossly::VertexArray());
-		glGenBuffers(1, &VBO);
-
 		float vertices[] =
 		{
 			0.0f, 0.5f, 0.0f,
@@ -29,10 +29,9 @@ public:
 		};
 
 		p_VertexArray->Bind();
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
-		glEnableVertexAttribArray(0);
+		p_VertexBuffer.reset(new Crossly::VertexBuffer(vertices, sizeof(vertices) / sizeof(float)));
+		Crossly::VertexBufferLayout layout = { { 0, 3, sizeof(float) * 3, 0, true } };
+		layout.SetAttribs();
 		Crossly::VertexArray::Unbind();
 
 		g_Manager.CreateShader("shader", { { "res/shader.vert", GL_VERTEX_SHADER }, { "res/shader.frag", GL_FRAGMENT_SHADER } });
@@ -49,6 +48,7 @@ public:
 		auto& shader = g_Manager.GetShader("shader");
 		shader.Use();
 		shader.SetFloat("t", f_TotalTime);
+
 		p_VertexArray->Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}
@@ -56,12 +56,13 @@ public:
 	virtual void OnDestroy() override
 	{
 		g_Manager.DestroyShader("shader");
-		glDeleteBuffers(1, &VBO);
+		p_VertexBuffer.reset();
+		p_VertexArray.reset();
 	}
 private:
 	float f_TotalTime;
-	GLuint VBO;
 	std::unique_ptr<Crossly::VertexArray> p_VertexArray;
+	std::unique_ptr<Crossly::VertexBuffer> p_VertexBuffer;
 };
 
 int main(int argc, char** argv)
