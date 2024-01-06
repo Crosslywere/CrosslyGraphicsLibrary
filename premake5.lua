@@ -20,6 +20,7 @@ vpaths {
 IncludeDirs = {}
 IncludeDirs["glfw"] = "Vendor/glfw/include"
 IncludeDirs["glad"] = "Vendor/glad/include"
+IncludeDirs["glm"] = "Vendor/glm"
 
 filter "configurations:Debug"
     defines "_DEBUG"
@@ -31,6 +32,10 @@ filter "configurations:Release"
     defines "NDEBUG"    
     optimize "on"
     runtime "Release"
+
+filter "system:windows"
+    cppdialect "C++17"
+    cdialect "C17"
 
 workspace "CrosslyGL"
 architecture "x64"
@@ -77,7 +82,8 @@ project "Sandbox"
     includedirs {
         "CrosslyGL/include",
         "%{IncludeDirs.glfw}",
-        "%{IncludeDirs.glad}"
+        "%{IncludeDirs.glad}",
+        "%{IncludeDirs.glm}"
     }
     links "CrosslyGL"
     postbuildcommands { "{COPYDIR} res %{cfg.buildtarget.directory}/res" }
