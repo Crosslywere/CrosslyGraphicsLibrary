@@ -3,9 +3,12 @@
 layout (location = 0) out vec4 oColor;
 
 uniform float t;
+uniform vec3 color1;
+uniform vec3 color2;
 
 void main()
 {
 	float a = cos(t) * 0.5 + 0.5;
-	oColor = vec4(a, 0.8 - (a * 0.5), 0.5, 1.0);
+	vec3 color = mix(color1, color2, a);
+	oColor = vec4(color, 1.0);
 }

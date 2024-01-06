@@ -5,6 +5,7 @@
 #include <CrosslyGL/VertexBufferLayout.hpp>
 // TODO: Remove need for glfw3.h
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 #include <iostream>
 #include <memory>
 
@@ -45,10 +46,13 @@ public:
 	virtual void OnRender() override
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
+		glm::vec3 color1 = { 1.0f, 0.5f, 0.0f };
+		glm::vec3 color2 = { 0.5f, 0.0f, 1.0f };
 		auto& shader = g_Manager.GetShader("shader");
 		shader.Use();
 		shader.SetFloat("t", f_TotalTime);
-
+		shader.SetVec3("color1", &color1.x);
+		shader.SetVec3("color2", &color2.x);
 		p_VertexArray->Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 	}

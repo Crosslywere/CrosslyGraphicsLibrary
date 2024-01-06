@@ -29,6 +29,9 @@ namespace Crossly
 		~Shader();
 		void Use() const;
 		void SetFloat(const std::string& name, float v0);
+		void SetVec2(const std::string& name, float* v);
+		void SetVec3(const std::string& name, float* v);
+		void SetVec4(const std::string& name, float* v);
 	private:
 		int GetUniformLocation(const std::string& name);
 	private:

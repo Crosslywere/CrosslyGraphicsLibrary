@@ -117,6 +117,21 @@ namespace Crossly
 		glUniform1f(GetUniformLocation(name), v0);
 	}
 
+	void Shader::SetVec2(const std::string& name, float* v)
+	{
+		glUniform2fv(GetUniformLocation(name), 1, v);
+	}
+
+	void Shader::SetVec3(const std::string& name, float* v)
+	{
+		glUniform3fv(GetUniformLocation(name), 1, v);
+	}
+
+	void Shader::SetVec4(const std::string& name, float* v)
+	{
+		glUniform4fv(GetUniformLocation(name), 1, v);
+	}
+
 	int Shader::GetUniformLocation(const std::string& name)
 	{
 		if (m_UniformCache.find(name) != m_UniformCache.end())
