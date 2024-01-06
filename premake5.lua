@@ -1,5 +1,7 @@
 if (os.target ~= nil and os.target("windows")) then
     systemversion "latest"
+    cppdialect "C++17"
+    cdialect "C17"
 end
 
 vpaths {
@@ -32,10 +34,6 @@ filter "configurations:Release"
     defines "NDEBUG"    
     optimize "on"
     runtime "Release"
-
-filter "system:windows"
-    cppdialect "C++17"
-    cdialect "C17"
 
 workspace "CrosslyGL"
 architecture "x64"
