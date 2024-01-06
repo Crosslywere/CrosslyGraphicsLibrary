@@ -31,7 +31,7 @@ namespace Crossly
 			glfwTerminate();
 			throw std::runtime_error("gladLoadGLLoader failed!");
 		}
-		std::cout << "Running '" << app->GetTitle() << "'\n";
+		std::cout << "Running '" << app->GetTitle() << "' on OpenGL version: " << glGetString(GL_VERSION) << "\n";
 		app->OnCreate();
 		float past = 0.0f;
 		while (!glfwWindowShouldClose(window))
