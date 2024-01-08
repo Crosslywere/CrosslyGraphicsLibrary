@@ -5,4 +5,5 @@ Currently supports
 
 * OpenGL:
     - Shaders
-
+	- VertexArrays
+	- VertexBuffers
